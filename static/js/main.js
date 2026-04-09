@@ -31,6 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
+        
+        // Only hide the native cursor on desktop when we detect movement
+        if (!isTouchDevice && window.innerWidth > 768) {
+            document.documentElement.classList.add('custom-cursor-active');
+        }
     });
 
     function animateCursor() {

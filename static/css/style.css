@@ -49,13 +49,24 @@ body:hover .cursor-dot, body:hover .cursor-circle {
 }
 
 body {
-    cursor: none; /* Hidden by default to use custom cursor */
+    background-color: var(--bg-dark);
 }
 
-/* Restore native cursor for interactive elements to ensure clickability */
-a, button, input, textarea, .magnetic {
+/* Elite Desktop Only: Hide native cursor only when custom cursor is active */
+.custom-cursor-active, .custom-cursor-active body {
+    cursor: none !important;
+}
+
+/* Ensure interactive elements ALWAYS show a pointer on desktop even if custom cursor is active */
+.custom-cursor-active a, 
+.custom-cursor-active button, 
+.custom-cursor-active input, 
+.custom-cursor-active textarea, 
+.custom-cursor-active .magnetic {
     cursor: auto !important;
 }
+
+
 
 
 html {
@@ -93,9 +104,10 @@ body {
     filter: blur(140px);
     z-index: -1;
     opacity: 0.2;
-    pointer-events: none;
+    pointer-events: none !important; /* Ensure blobs never block clicks */
     animation: move-blob 25s infinite alternate ease-in-out;
 }
+
 
 .blob-1 { top: -10%; left: -10%; width: 600px; height: 600px; background: #a855f7; }
 .blob-2 { bottom: -10%; right: -10%; width: 500px; height: 500px; background: #06b6d4; animation-delay: -5s; }
@@ -133,6 +145,7 @@ section {
     padding: 2.5rem;
     position: relative;
     overflow: hidden;
+    z-index: 10; /* Ensure cards are above background but below cursor/nav */
     transition: var(--transition);
     box-shadow: 
         inset 0 0 20px rgba(255, 255, 255, 0.02),
