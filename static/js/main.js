@@ -44,33 +44,45 @@ document.addEventListener('DOMContentLoaded', () => {
 
         requestAnimationFrame(animateCursor);
     }
-    animateCursor();
+    // Disable premium visuals on touch devices for maximum usability
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    
+    if (!isTouchDevice && window.innerWidth > 768) {
+        animateCursor();
+    } else {
+        if (cursorDot) cursorDot.style.display = 'none';
+        if (cursorCircle) cursorCircle.style.display = 'none';
+        const canvas = document.getElementById('bg-canvas');
+        if (canvas) canvas.style.display = 'none';
+    }
 
-    // 3. Magnetic Interaction Logic
-    const magneticElements = document.querySelectorAll('.magnetic');
-    magneticElements.forEach(el => {
-        el.addEventListener('mousemove', function(e) {
-            const pos = el.getBoundingClientRect();
-            const x = e.clientX - pos.left - pos.width / 2;
-            const y = e.clientY - pos.top - pos.height / 2;
-            
-            el.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
-            cursorCircle.style.width = '80px';
-            cursorCircle.style.height = '80px';
-            cursorCircle.style.borderColor = 'rgba(168, 85, 247, 0.5)';
+    // 3. Magnetic Interaction Logic (Only for Desktop)
+    if (!isTouchDevice) {
+        const magneticElements = document.querySelectorAll('.magnetic');
+        magneticElements.forEach(el => {
+            el.addEventListener('mousemove', function(e) {
+                const pos = el.getBoundingClientRect();
+                const x = e.clientX - pos.left - pos.width / 2;
+                const y = e.clientY - pos.top - pos.height / 2;
+                
+                el.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+                cursorCircle.style.width = '80px';
+                cursorCircle.style.height = '80px';
+                cursorCircle.style.borderColor = 'rgba(168, 85, 247, 0.5)';
+            });
+
+            el.addEventListener('mouseleave', function() {
+                el.style.transform = 'translate(0, 0)';
+                cursorCircle.style.width = '40px';
+                cursorCircle.style.height = '40px';
+                cursorCircle.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+            });
         });
+    }
 
-        el.addEventListener('mouseleave', function() {
-            el.style.transform = 'translate(0, 0)';
-            cursorCircle.style.width = '40px';
-            cursorCircle.style.height = '40px';
-            cursorCircle.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-        });
-    });
-
-    // 4. Elite Neural Link Particle System
+    // 4. Elite Neural Link Particle System (Only for Desktop)
     const canvas = document.getElementById('bg-canvas');
-    if (canvas) {
+    if (canvas && !isTouchDevice && window.innerWidth > 768) {
         const ctx = canvas.getContext('2d');
         let particles = [];
         
