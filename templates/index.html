@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ data.personal.name }} | {{ data.personal.role }}</title>
+    <meta name="description" content="{{ data.personal.bio }}">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@300;400;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="cyber-theme">
+    <!-- Elite Visuals -->
+    <canvas id="bg-canvas"></canvas>
+    <div class="cursor-dot"></div>
+    <div class="cursor-circle"></div>
+    
+    <div class="bg-blob blob-1"></div>
+    <div class="bg-blob blob-2"></div>
+    <div class="bg-blob blob-3"></div>
+    
+    <!-- Navbar -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">{{ data.personal.name.split()[0] }}<span>.</span></a>
+            <div class="menu-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#education">Education</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#personal-details">Details</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <div class="status-pill reveal">
+                        <span class="pulsing-dot"></span> Available for Work
+                    </div>
+                    <h1 class="reveal-text">{{ data.personal.name }}</h1>
+                    <p class="reveal">{{ data.personal.role }}</p>
+                    <div class="hero-btns reveal">
+                        <a href="#projects" class="btn btn-primary magnetic">Featured Work <i class="fa-solid fa-arrow-right"></i></a>
+                        <a href="#contact" class="btn btn-secondary magnetic">Let's Talk</a>
+                    </div>
+                </div>
+                <div class="hero-visual reveal">
+                    <div class="orbital-container">
+                        <div class="orbit-ring"></div>
+                        <div class="hero-img-container">
+                            <img src="/static/images/profile.png" alt="{{ data.personal.name }}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">Professional Profile</h2>
+            <div class="glass-card reveal">
+                <p style="font-size: 1.1rem; line-height: 1.8; color: var(--text-muted); text-align: justify;">{{ data.personal.bio }}</p>
+                <div class="social-links" style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                    <a href="{{ data.personal.social.github }}" class="magnetic" target="_blank" style="font-size: 1.5rem; color: var(--primary);"><i class="fa-brands fa-github"></i></a>
+                    <a href="{{ data.personal.social.linkedin }}" class="magnetic" target="_blank" style="font-size: 1.5rem; color: var(--primary);"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="{{ data.personal.social.instagram }}" class="magnetic" target="_blank" style="font-size: 1.5rem; color: var(--primary);"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education & Skills combined in a Bento layout if possible -->
+    <section id="education" class="education">
+        <div class="container">
+            <h2 class="section-title">Academic Journey</h2>
+            <div class="timeline">
+                {% for edu in data.education %}
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content glass-card">
+                        <span class="period" style="color: var(--secondary); font-weight: 700;">{{ edu.period }}</span>
+                        <h3 style="margin: 0.5rem 0;">{{ edu.degree }}</h3>
+                        <h4 style="color: var(--text-muted); opacity: 0.8;">{{ edu.institution }}</h4>
+                        <p style="margin-top: 1rem; font-size: 0.95rem;">{{ edu.description }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="skills">
+        <div class="container">
+            <h2 class="section-title">Technical Expertise</h2>
+            <div class="details-grid">
+                {% for skill in data.skills %}
+                <div class="details-item glass-card reveal">
+                    <i class="{{ skill.icon }}" style="font-size: 2.2rem; color: var(--primary); margin-bottom: 1.5rem; display: block;"></i>
+                    <span class="label" style="font-size: 0.8rem; letter-spacing: 2px;">{{ skill.name }}</span>
+                    <div style="height: 4px; background: rgba(255,255,255,0.05); border-radius: 2px; margin-top: 1.5rem; overflow: hidden;">
+                        <div class="skill-progress" style="width: 0; height: 100%; background: var(--gradient); border-radius: 2px; transition: width 1.5s ease-out;" data-width="{{ skill.level }}%"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section id="experience" class="experience">
+        <div class="container">
+            <h2 class="section-title">Professional Experience</h2>
+            <div class="timeline">
+                {% for job in data.experience %}
+                <div class="timeline-item reveal">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content glass-card">
+                        <span class="period" style="color: var(--secondary); font-weight: 700;">{{ job.period }}</span>
+                        <h3 style="margin: 0.5rem 0;">{{ job.role }}</h3>
+                        <h4 style="color: var(--text-muted); opacity: 0.8;">{{ job.company }}</h4>
+                        <p style="margin-top: 1rem; font-size: 0.95rem;">{{ job.description }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="projects">
+        <div class="container">
+            <h2 class="section-title">Featured Projects</h2>
+            <div class="projects-grid">
+                {% for project in data.projects %}
+                <div class="project-card glass-card reveal">
+                    <div class="project-img">
+                        <img src="{{ project.image }}" alt="{{ project.title }}">
+                        <div class="project-overlay">
+                            <a href="{{ project.link }}" class="btn btn-primary magnetic" target="_blank">View Live</a>
+                        </div>
+                    </div>
+                    <div class="project-info">
+                        <h3>{{ project.title }}</h3>
+                        <p style="color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; margin: 1rem 0;">{{ project.description }}</p>
+                        <div class="project-tech">
+                            {% for tech in project.tech %}
+                            <span>{{ tech }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section id="personal-details" class="personal-details">
+        <div class="container">
+            <h2 class="section-title">Personal Records</h2>
+            <div class="glass-card reveal">
+                <div class="details-grid">
+                    <div class="details-item" style="background: transparent; border: none; padding: 0;">
+                        <span class="label">Legal Name</span>
+                        <span class="value" style="font-size: 1.1rem; display: block; margin-top: 0.5rem;">{{ data.personal.name }}</span>
+                    </div>
+                    <div class="details-item" style="background: transparent; border: none; padding: 0;">
+                        <span class="label">Guardian Name</span>
+                        <span class="value" style="font-size: 1.1rem; display: block; margin-top: 0.5rem;">{{ data.personal.father_name }}</span>
+                    </div>
+                    <div class="details-item" style="background: transparent; border: none; padding: 0;">
+                        <span class="label">Date of Birth</span>
+                        <span class="value" style="font-size: 1.1rem; display: block; margin-top: 0.5rem;">{{ data.personal.dob }}</span>
+                    </div>
+                    <div class="details-item" style="background: transparent; border: none; padding: 0;">
+                        <span class="label">Nationality</span>
+                        <span class="value" style="font-size: 1.1rem; display: block; margin-top: 0.5rem;">{{ data.personal.nationality }}</span>
+                    </div>
+                    <div class="details-item" style="background: transparent; border: none; padding: 0;">
+                        <span class="label">Contact Info</span>
+                        <span class="value" style="font-size: 1.1rem; display: block; margin-top: 0.5rem;">{{ data.personal.phone | join(', ') }}</span>
+                    </div>
+                    <div class="details-item" style="background: transparent; border: none; padding: 0;">
+                        <span class="label">Permanent Address</span>
+                        <span class="value" style="font-size: 1rem; display: block; margin-top: 0.5rem; color: var(--text-muted);">{{ data.personal.location }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="glass-card reveal" style="max-width: 800px; margin: 0 auto; padding: 3rem;">
+                <form id="contact-form">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                        <div>
+                            <label class="label" style="display: block; margin-bottom: 0.8rem;">Full Name</label>
+                            <input type="text" placeholder="John Doe" required>
+                        </div>
+                        <div>
+                            <label class="label" style="display: block; margin-bottom: 0.8rem;">Email Address</label>
+                            <input type="email" placeholder="john@example.com" required>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 2.5rem;">
+                        <label class="label" style="display: block; margin-bottom: 0.8rem;">Your Message</label>
+                        <textarea placeholder="Tell me about your project..." rows="6" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary magnetic" style="width: 100%; justify-content: center; font-size: 1.1rem;">Submit Inquiry <i class="fa-brands fa-whatsapp"></i></button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 {{ data.personal.name }}. Refined to Perfection.</p>
+        </div>
+    </footer>
+
+    <!-- JS -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
