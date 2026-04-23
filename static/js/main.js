@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // 0. Environment Detection
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
     // 1. Navbar Scroll Effect
     const navbar = document.getElementById('navbar');
     const sections = document.querySelectorAll('section');
@@ -11,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let current = '';
         sections.forEach(section => {
             const sectionTop = section.offsetTop;
-            if (pageYOffset >= sectionTop - 200) current = section.getAttribute('id');
+            if (window.scrollY >= sectionTop - 200) current = section.getAttribute('id');
         });
 
         navItems.forEach(item => {
@@ -49,8 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         requestAnimationFrame(animateCursor);
     }
-    // Disable premium visuals on touch devices for maximum usability
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     
     if (!isTouchDevice && window.innerWidth > 768) {
         animateCursor();

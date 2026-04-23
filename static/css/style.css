@@ -17,8 +17,9 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 9999;
+    z-index: 10000; /* Higher than navbar */
     border-radius: 50%;
+    pointer-events: none !important;
     opacity: 0;
     transition: opacity 0.3s ease, transform 0.1s ease;
 }
@@ -159,6 +160,7 @@ section {
     background: linear-gradient(135deg, transparent, rgba(168, 85, 247, 0.05));
     opacity: 0;
     transition: var(--transition);
+    pointer-events: none; /* Critical: Prevent pseudo-element from blocking content interactions */
 }
 
 .glass-card:hover {
